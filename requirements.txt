@@ -1,25 +1,3 @@
-﻿# Core
-Django==6.0
+﻿Django==4.2.8
 gunicorn==21.2.0
-
-# Static files
 whitenoise==6.6.0
-
-# Environment variables
-python-decouple==3.8
-
-# Database (для продакшена на Render)
-psycopg2-binary==2.9.9
-dj-database-url==2.1.0
-
-# Image processing (если используете изображения)
-Pillow==10.3.0
-
-# Для разработки (можно оставить или удалить)
-pandas==2.3.3
-openpyxl==3.1.5
-numpy==2.4.0
-
-# Django dependencies
-asgiref==3.11.0
-sqlparse==0.5.5
