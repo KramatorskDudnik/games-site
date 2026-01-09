@@ -3,10 +3,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Ключ для Render
-SECRET_KEY = "django-insecure-render-production-key-2025-01-09"
+SECRET_KEY = "django-insecure-render-production-key-final-123"
 DEBUG = False
-ALLOWED_HOSTS = ["*", ".onrender.com"]
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -36,7 +35,7 @@ ROOT_URLCONF = "boardgames_site.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
