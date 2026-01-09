@@ -1,0 +1,1 @@
+web: gunicorn boardgames_site.wsgi

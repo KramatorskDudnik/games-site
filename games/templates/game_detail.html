@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.title }} - Детали игры</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f2f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            margin-bottom: 20px;
+        }
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .game-info {
+            margin: 20px 0;
+        }
+        .game-info p {
+            margin: 10px 0;
+        }
+        .game-info strong {
+            color: #2c3e50;
+        }
+        
+        /* Карусель изображений */
+        .image-carousel {
+            margin: 30px 0;
+        }
+        
+        .carousel-main {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .carousel-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #f8f9fa;
+            display: none;
+        }
+        
+        .carousel-main img.active {
+            display: block;
+        }
+        
+        .carousel-thumbnails {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .thumbnail.active {
+            border-color: #3498db;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .carousel-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-btn:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+        
+        .image-counter {
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .carousel-main {
+                height: 300px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-main {
+                height: 200px;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="/">&larr; Назад к поиску</a>
+        </div>
+        
+        <h1>{{ game.title }}</h1>
+        
+        <div class="game-info">
+            {% if game.description %}
+            <p><strong>Описание:</strong> {{ game.description }}</p>
+            {% endif %}
+            
+            {% if game.min_players %}
+            <p><strong>Количество игроков:</strong>
+                {% if game.max_players and game.max_players != game.min_players %}
+                    {{ game.min_players }}-{{ game.max_players }}
+                {% else %}
+                    {{ game.min_players }}
+                {% endif %}
+            </p>
+            {% endif %}
+            
+            {% if game.playtime_minutes %}
+            <p><strong>Среднее время игры:</strong> {{ game.playtime_minutes }} минут</p>
+            {% endif %}
+            
+            {% if game.difficulty %}
+            <p><strong>Сложность:</strong> {{ game.difficulty|floatformat:0 }}/5</p>
+            {% endif %}
+            
+            {% if game.categories %}
+            <p><strong>Категории:</strong> {{ game.categories }}</p>
+            {% endif %}
+            
+            {% if game.rules_link %}
+            <p><strong>Правила:</strong> <a href="{{ game.rules_link }}" target="_blank">{{ game.rules_link }}</a></p>
+            {% endif %}
+            
+            {% if game.video_link %}
+            <p><strong>Видео:</strong> <a href="{{ game.video_link }}" target="_blank">{{ game.video_link }}</a></p>
+            {% endif %}
+        </div>
+        
+        <!-- Изображения игры с каруселью -->
+        {% if game.images.all %}
+        <div class="image-carousel">
+            <h2>Изображения</h2>
+            
+            <!-- Основное изображение -->
+            <div class="carousel-main">
+                {% for image in game.images.all %}
+                    {% if image.url %}
+                    <img src="{{ image.url }}" 
+                         alt="{{ game.title }} - изображение {{ forloop.counter }}" 
+                         class="{% if forloop.first %}active{% endif %}" 
+                         data-index="{{ forloop.counter0 }}">
+                    {% elif image.image %}
+                    <img src="{{ image.image.url }}" 
+                         alt="{{ game.title }} - изображение {{ forloop.counter }}" 
+                         class="{% if forloop.first %}active{% endif %}" 
+                         data-index="{{ forloop.counter0 }}">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Миниатюры (только если больше 1 изображения) -->
+            {% if game.images.all|length > 1 %}
+            <div class="carousel-thumbnails">
+                {% for image in game.images.all %}
+                <div class="thumbnail {% if forloop.first %}active{% endif %}" 
+                     data-index="{{ forloop.counter0 }}">
+                    {% if image.url %}
+                    <img src="{{ image.url }}" 
+                         alt="Миниатюра {{ forloop.counter }}">
+                    {% elif image.image %}
+                    <img src="{{ image.image.url }}" 
+                         alt="Миниатюра {{ forloop.counter }}">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Навигация -->
+            <div class="carousel-nav">
+                <button class="carousel-btn prev-btn" onclick="prevImage()">❮</button>
+                <span class="image-counter">
+                    <span id="current-image">1</span> / {{ game.images.all|length }}
+                </span>
+                <button class="carousel-btn next-btn" onclick="nextImage()">❯</button>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+<script>
+    // Карусель изображений
+    let currentImageIndex = 0;
+    let images, thumbnails, totalImages;
+    let autoSlideInterval;
+    
+    function initCarousel() {
+        images = document.querySelectorAll('.carousel-main img');
+        thumbnails = document.querySelectorAll('.thumbnail');
+        totalImages = images.length;
+        
+        console.log(`Инициализация карусели: ${totalImages} изображений`);
+        
+        if (totalImages > 0) {
+            showImage(0);
+            
+            // Вешаем обработчики на миниатюры
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener('click', function() {
+                    showImage(index);
+                });
+            });
+            
+            // Клавиатурная навигация
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            });
+            
+            // Запускаем автопрокрутку через 3 секунды
+            setTimeout(startAutoSlide, 3000);
+        }
+    }
+    
+    function showImage(index) {
+        // Останавливаем автопрокрутку при ручном переключении
+        stopAutoSlide();
+        
+        // Скрываем все изображения
+        images.forEach(img => img.classList.remove('active'));
+        thumbnails.forEach(thumb => thumb.classList.remove('active'));
+        
+        // Показываем выбранное
+        if (images[index]) images[index].classList.add('active');
+        if (thumbnails[index]) thumbnails[index].classList.add('active');
+        
+        // Обновляем счетчик
+        const counter = document.getElementById('current-image');
+        if (counter) counter.textContent = index + 1;
+        
+        currentImageIndex = index;
+        
+        // Перезапускаем автопрокрутку через 3 секунды
+        setTimeout(startAutoSlide, 3000);
+    }
+    
+    function nextImage() {
+        let nextIndex = currentImageIndex + 1;
+        if (nextIndex >= totalImages) {
+            nextIndex = 0;
+        }
+        showImage(nextIndex);
+    }
+    
+    function prevImage() {
+        let prevIndex = currentImageIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = totalImages - 1;
+        }
+        showImage(prevIndex);
+    }
+    
+    // Автопрокрутка
+    function startAutoSlide() {
+        if (totalImages > 1) {
+            console.log("Запуск автопрокрутки");
+            stopAutoSlide(); // Останавливаем предыдущий интервал
+            
+            autoSlideInterval = setInterval(function() {
+                console.log("Автопрокрутка: следующее изображение");
+                let nextIndex = currentImageIndex + 1;
+                if (nextIndex >= totalImages) {
+                    nextIndex = 0;
+                }
+                
+                // Плавное переключение
+                images.forEach(img => img.classList.remove('active'));
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                
+                if (images[nextIndex]) images[nextIndex].classList.add('active');
+                if (thumbnails[nextIndex]) thumbnails[nextIndex].classList.add('active');
+                
+                const counter = document.getElementById('current-image');
+                if (counter) counter.textContent = nextIndex + 1;
+                
+                currentImageIndex = nextIndex;
+            }, 5000); // 5 секунд между сменами
+        }
+    }
+    
+    function stopAutoSlide() {
+        if (autoSlideInterval) {
+            console.log("Остановка автопрокрутки");
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+        }
+    }
+    
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', initCarousel);
+    
+    // Останавливаем автопрокрутку при наведении
+    const carousel = document.querySelector('.image-carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', function() {
+            console.log("Мышь над каруселью - останавливаем автопрокрутку");
+            stopAutoSlide();
+        });
+        
+        carousel.addEventListener('mouseleave', function() {
+            console.log("Мышь ушла - запускаем автопрокрутку через 1 секунду");
+            setTimeout(startAutoSlide, 1000);
+        });
+    }
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,100 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Заголовок -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                    <li class="breadcrumb-item active">Все категории</li>
+                </ol>
+            </nav>
+            <h1><i class="fas fa-tags me-2"></i>{{ title }}</h1>
+            <p class="lead">Все категории игр в нашем каталоге</p>
+        </div>
+    </div>
+    
+    <!-- Список категорий -->
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+            <a href="#" class="text-decoration-none">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="{{ category.icon }} fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        {% if category.description %}
+                        <p class="card-text text-muted small">
+                            {{ category.description|truncatewords:8 }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <span class="badge bg-info">
+                            <i class="fas fa-dice me-1"></i>Игры
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                <h4>Категории не найдены</h4>
+                <p>Запустите скрипт add_categories.py для добавления категорий</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Статистика -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>Информация</h5>
+                    <p class="card-text">
+                        Всего в каталоге: <strong>{{ categories|length }}</strong> категорий.
+                        Каждая категория содержит игры определенного жанра или типа.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-lightbulb me-2"></i>Совет</h5>
+                    <p class="card-text">
+                        Нажмите на любую категорию, чтобы увидеть игры в этой категории.
+                        Используйте поиск для быстрого нахождения нужной игры.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: all 0.3s ease;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: #007bff;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}

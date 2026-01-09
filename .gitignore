@@ -1,0 +1,104 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Django
+db.sqlite3
+*.log
+local_settings.py
+*.sqlite3
+
+# Static and media
+staticfiles/
+media/
+*.static
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Backup files
+*.bak
+*.backup
+
+# Excel и временные файлы данных
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# Ваши временные скрипты (добавьте те что видите в untracked files)
+add_categories.py
+add_games.py
+add_sample_games.py
+check_columns.py
+check_complexity.py
+check_complexity_values.py
+check_db.py
+check_excel_data.py
+check_field_names.py
+check_models.py
+debug_import.py
+detailed_debug.py
+direct_sql_import.py
+fix_newlines.py
+import_all_games.py
+import_correct.py
+import_fixed.py
+import_from_excel.py
+import_games.py
+import_with_check.py
+media_settings.txt
+setup.py
+temp_comment.txt
+test_filters.py
+test_import.py
+update_playtimes.py
+update_times.py
+"\320\241\320\277\320\270\321\201\320\276\320\272 \320\270\320\263\321\200.xlsx"
+
+# Продукционные файлы (оставляем)
+!requirements.txt
+!Procfile
+!runtime.txt
+!manage.py
