@@ -4,7 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-render-production-key-final-123"
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "games",
-    "boardgames",
+    # "boardgames",
     "main",
 ]
 
@@ -53,7 +53,7 @@ WSGI_APPLICATION = "boardgames_site.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'NAME': r'C:\GamesSite\db.sqlite3',  # Абсолютный путь
     }
 }
 
@@ -62,3 +62,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

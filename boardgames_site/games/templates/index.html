@@ -1,0 +1,1089 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступные игры</title>
+    <style>
+        /* БАЗОВЫЕ СТИЛИ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        /* Эффекты для чекбоксов */
+label:hover {
+    border-color: #4CAF50 !important;
+    background-color: #f8f9fa !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Эффекты для кнопок */
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
+}
+
+button[type="button"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    background-color: #fff !important;
+}
+        /* Стили для подборщика игр */
+        .game-finder {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .game-finder h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .game-finder label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .game-finder select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .game-finder select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            outline: none;
+        }
+
+        .game-finder button[type="submit"] {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .game-finder button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .game-finder button[type="button"] {
+            background: #f5f5f5;
+            color: #666;
+            border: 2px solid #ddd;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .game-finder button[type="button"]:hover {
+            background: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            align-items: center;
+        }
+        
+        .meta-item {
+            background: #f0f2ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #5a67d8;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            height: 32px;
+            line-height: 1;
+            box-sizing: border-box;
+        }
+        
+        /* Специфичные стили для каждого типа */
+        .meta-item.players .players-value {
+            font-weight: bold;
+        }
+        
+        .meta-item.time .time-value {
+            font-weight: bold;
+        }
+        
+        .meta-item.difficulty .difficulty-value {
+            font-weight: bold;
+        }
+        
+        .meta-item.categories .categories-value {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .search-box {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        #search-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        #search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        #search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .search-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .results-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .results-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .results-count {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* СЕТКА ИГР */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        /* КАРТОЧКА ИГРЫ */
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        /* ИЗОБРАЖЕНИЕ ИГРЫ */
+        .game-image-container {
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .game-card:hover .game-image {
+            transform: scale(1.05);
+        }
+        
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        /* СОДЕРЖИМОЕ КАРТОЧКИ */
+        .game-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-title {
+            color: #2c3e50;
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+        
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .meta-item {
+            background: #f0f2ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #5a67d8;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .game-description {
+            color: #555;
+            line-height: 1.6;
+            margin-top: 15px;
+            flex-grow: 1;
+        }
+        
+        /* КНОПКА ПОДРОБНЕЕ */
+        .game-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+        
+        .game-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* ПУСТОЙ РЕЗУЛЬТАТ */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .empty-state h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        /* ПАГИНАЦИЯ */
+        .pagination-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .pagination {
+            display: inline-flex;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            align-items: center;
+        }
+        
+        .page-item {
+            display: inline-block;
+        }
+        
+        .page-link {
+            display: block;
+            padding: 10px 16px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            min-width: 44px;
+            text-align: center;
+        }
+        
+        .page-link:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .current-page {
+            background: #4a5568;
+        }
+        
+        .disabled-page {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .pagination-info {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* АВТОДОПОЛНЕНИЕ */
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            display: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .suggestion-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #search-form {
+                flex-direction: column;
+            }
+            
+            #search-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .search-button {
+                width: 100%;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .game-image-container {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .game-content {
+                padding: 20px;
+            }
+            
+            .game-image-container {
+                height: 160px;
+            }
+        }
+    </style>
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Доступные игры</h1>
+            <p class="subtitle">Найдите подходящую игру</p>
+            
+                    <div class="search-box" style="margin: 20px 0 10px 0;">
+            <form id="search-form" method="GET" action="/games/" style="max-width: 500px; margin: 0 auto;">
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        name="q" 
+                        value="{{ query }}" 
+                        placeholder="Поиск по названию игры..."
+                        autocomplete="off"
+                        style="
+                            flex: 1;
+                            padding: 12px 20px;
+                            font-size: 16px;
+                            border: 2px solid #e0e0e0;
+                            border-radius: 25px 0 0 25px;
+                            outline: none;
+                            transition: all 0.3s ease;
+                        "
+                    >
+                    <button type="submit" class="search-button" style="
+                        padding: 12px 25px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 0 25px 25px 0;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        white-space: nowrap;
+                    ">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+                </div>
+            </form>
+        </div>
+        </header>
+
+       <!-- ПОДБОРЩИК ИГР - ДВУХКОЛОНОЧНАЯ ВЕРСИЯ -->
+<div class="game-finder" style="margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <h3 style="margin-bottom: 15px; color: #2c3e50; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+        <span style="background: #4CAF50; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🎯</span>
+        Подобрать игру для вашей компании
+    </h3>
+    
+    <form method="GET" action="/games/" id="game-finder-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        
+        <!-- ЛЕВАЯ КОЛОНКА: Игроки и время -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- ИГРОКИ -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                    <span style="color: #4CAF50;">👥</span>
+                    Количество игроков
+                </label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div style="flex: 1;">
+                        <input type="number" 
+                               id="players_min" 
+                               name="players_min" 
+                               min="1" 
+                               max="8" 
+                               value="{% if players_min %}{{ players_min }}{% else %}1{% endif %}"
+                               style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="color: #999; font-size: 14px;">–</div>
+                    <div style="flex: 1;">
+                        <input type="number" 
+                               id="players_max" 
+                               name="players_max" 
+                               min="1" 
+                               max="8" 
+                               value="{% if players_max %}{{ players_max }}{% else %}8{% endif %}"
+                               style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px;">
+                    </div>
+                </div>
+                <div style="font-size: 0.75rem; color: #666; margin-top: 6px; display: flex; justify-content: space-between;">
+                    <span>мин: 1</span>
+                    <span>макс: 8</span>
+                </div>
+            </div>
+            
+            <!-- ВРЕМЯ -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                    <span style="color: #2196F3;">⏱️</span>
+                    Время игры (минут)
+                </label>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div style="flex: 1;">
+                        <input type="number" 
+                               id="time_min" 
+                               name="time_min" 
+                               min="5" 
+                               max="300" 
+                               value="{% if time_min %}{{ time_min }}{% else %}5{% endif %}"
+                               style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div style="color: #999; font-size: 14px;">–</div>
+                    <div style="flex: 1;">
+                        <input type="number" 
+                               id="time_max" 
+                               name="time_max" 
+                               min="5" 
+                               max="300" 
+                               value="{% if time_max %}{{ time_max }}{% else %}300{% endif %}"
+                               style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px;">
+                    </div>
+                </div>
+                <div style="font-size: 0.75rem; color: #666; margin-top: 6px; display: flex; justify-content: space-between;">
+                    <span>мин: 5</span>
+                    <span>макс: 300+</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ПРАВАЯ КОЛОНКА: Сложность и кнопки -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- СЛОЖНОСТЬ -->
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                    <span style="color: #9C27B0;">🎯</span>
+                    Сложность (можно выбрать несколько)
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    {% with selected_difficulties=request.GET.getlist %}
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; transition: all 0.2s;">
+                        <input type="checkbox" name="difficulty" value="1" 
+                               style="margin: 0; width: 16px; height: 16px;"
+                               {% if "1" in selected_difficulties %}checked{% endif %}>
+                        <span>1/5 – Очень легкая</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; transition: all 0.2s;">
+                        <input type="checkbox" name="difficulty" value="2"
+                               style="margin: 0; width: 16px; height: 16px;"
+                               {% if "2" in selected_difficulties %}checked{% endif %}>
+                        <span>2/5 – Легкая</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; transition: all 0.2s;">
+                        <input type="checkbox" name="difficulty" value="3"
+                               style="margin: 0; width: 16px; height: 16px;"
+                               {% if "3" in selected_difficulties %}checked{% endif %}>
+                        <span>3/5 – Средняя</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; transition: all 0.2s;">
+                        <input type="checkbox" name="difficulty" value="4"
+                               style="margin: 0; width: 16px; height: 16px;"
+                               {% if "4" in selected_difficulties %}checked{% endif %}>
+                        <span>4/5 – Сложная</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e0e0e0; transition: all 0.2s; grid-column: span 2;">
+                        <input type="checkbox" name="difficulty" value="5"
+                               style="margin: 0; width: 16px; height: 16px;"
+                               {% if "5" in selected_difficulties %}checked{% endif %}>
+                        <span>5/5 – Очень сложная</span>
+                    </label>
+                    {% endwith %}
+                </div>
+            </div>
+            
+            <!-- КНОПКИ -->
+            <div style="display: flex; gap: 10px; margin-top: auto;">
+                <button type="submit" 
+                        style="flex: 1; padding: 12px; background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                    <span style="font-size: 1.1rem;">🔍</span>
+                    Подобрать игры
+                </button>
+                <button type="button" 
+                        onclick="clearFilters()"
+                        style="flex: 1; padding: 12px; background: #f5f5f5; color: #666; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                    <span style="font-size: 1.1rem;">❌</span>
+                    Сбросить
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+        <div class="results-header">
+            {% if query %}
+                <h2>Результаты поиска "{{ query }}"</h2>
+                <!-- Активные фильтры -->
+                {% if has_filters %}
+                <div style="margin: 15px 0; padding: 10px; background: #e8f5e9; border-radius: 5px; border-left: 4px solid #4CAF50;">
+                    <strong>🎯 Активные фильтры:</strong>
+                    
+                    {% if players_min or players_max %}
+                    <span style="margin: 0 10px;">
+                        👥 
+                        {% if players_min and players_max %}
+                            {{ players_min }}-{{ players_max }} игроков
+                        {% elif players_min %}
+                            от {{ players_min }} игроков
+                        {% elif players_max %}
+                            до {{ players_max }} игроков
+                        {% endif %}
+                    </span>
+                    {% endif %}
+                    
+                    {% if time_min or time_max %}
+                    <span style="margin: 0 10px;">
+                       ⏱️ 
+                        {% if time_min and time_max %}
+                            {{ time_min }}-{{ time_max }} минут
+                        {% elif time_min %}
+                            от {{ time_min }} минут
+                        {% elif time_max %}
+                            до {{ time_max }} минут
+                        {% endif %}
+                    </span>
+                    {% endif %}
+                    
+                    {% if difficulty %}
+                    <span style="margin: 0 10px;">
+                        🎯 Сложность: {{ difficulty }}/5
+                    </span>
+                    {% endif %}
+                    
+                    <a href="/games/" style="margin-left: 15px; color: #d32f2f; text-decoration: none;">
+                        ❌ Очистить все фильтры
+                    </a>
+                </div>
+                {% endif %}
+            {% else %}
+                <h2>Все игры в каталоге</h2>
+            {% endif %}
+            <div class="results-count">
+                Всего игр: {{ games.paginator.count }}
+                {% if query %} (по запросу "{{ query }}"){% endif %}
+            </div>
+        </div>
+
+        <div class="games-grid">
+            {% for game in games %}
+            <div class="game-card">
+                <!-- ИЗОБРАЖЕНИЕ ИГРЫ -->
+                <div class="game-image-container" id="image-{{ game.id }}">
+                    {% for image in game.images.all %}
+                        {% if forloop.first %}
+                            {% if image.url %}
+                                <img src="{{ image.url }}" 
+                                     alt="{{ game.title }}" 
+                                     class="game-image"
+                                     data-game-id="{{ game.id }}"
+                                     onerror="handleImageError({{ game.id }})">
+                            {% elif image.image %}
+                                <img src="{{ image.image.url }}" 
+                                     alt="{{ game.title }}" 
+                                     class="game-image"
+                                     data-game-id="{{ game.id }}"
+                                     onerror="handleImageError({{ game.id }})">
+                            {% else %}
+                                <div class="no-image">🎲</div>
+                            {% endif %}
+                        {% endif %}
+                    {% empty %}
+                        <div class="no-image">🎲</div>
+                    {% endfor %}
+                </div>
+
+                <div class="game-content">
+                    <h3 class="game-title">{{ game.title }}</h3>
+                    
+                    <div class="game-meta">
+                        <!-- ИГРОКИ -->
+                        {% with min_players=game.min_players max_players=game.max_players %}
+                            {% if min_players %}
+                            <span class="meta-item players" title="Количество игроков">
+                                <i class="fas fa-users"></i>
+                                {% if max_players and max_players != min_players %}
+                                    <span class="players-value">{{ min_players }}-{{ max_players }}</span>
+                                {% else %}
+                                    <span class="players-value">{{ min_players }}</span>
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <!-- ВРЕМЯ ИГРЫ -->
+                        {% with playtime=game.playtime %}
+                            {% if playtime %}
+                            <span class="meta-item time" title="Среднее время игры">
+                                <i class="fas fa-clock"></i>
+                                <span class="time-value">{{ playtime }} мин</span>
+                            </span>
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <!-- СЛОЖНОСТЬ -->
+                        {% with difficulty=game.difficulty_rating %}
+                            {% if difficulty %}
+                            <span class="meta-item difficulty" title="Сложность игры">
+                                <i class="fas fa-brain"></i>
+                                <span class="difficulty-value">{{ difficulty }}/5</span>
+                            </span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    
+                    <p class="game-description">
+                        {{ game.description|truncatechars:200|default:"Описание отсутствует" }}
+                    </p>
+                    
+                    <a href="{% url 'game_detail' game.id %}" class="game-link">
+                        Подробнее <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <h3>🎲 Игр не найдено</h3>
+                <p>Попробуйте изменить поисковый запрос или просмотрите все игры</p>
+                <a href="/" class="game-link" style="margin: 20px auto 0 auto; display: inline-block;">
+                    Показать все игры
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- ПАГИНАЦИЯ -->
+        {% if games.has_other_pages %}
+        <div class="pagination-container">
+            <div class="pagination">
+                {% if games.has_previous %}
+                    <div class="page-item">
+                        <a href="?page=1{% if query %}&q={{ query }}{% endif %}" class="page-link" title="Первая страница">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </div>
+                    <div class="page-item">
+                        <a href="?page={{ games.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" class="page-link" title="Предыдущая страница">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                
+                {% for num in games.paginator.page_range %}
+                    {% if num > games.number|add:'-3' and num < games.number|add:'3' %}
+                        <div class="page-item">
+                            {% if games.number == num %}
+                                <span class="page-link current-page">{{ num }}</span>
+                            {% else %}
+                                <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}" class="page-link">{{ num }}</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if games.has_next %}
+                    <div class="page-item">
+                        <a href="?page={{ games.next_page_number }}{% if query %}&q={{ query }}{% endif %}" class="page-link" title="Следующая страница">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </div>
+                    <div class="page-item">
+                        <a href="?page={{ games.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}" class="page-link" title="Последняя страница">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="pagination-info">
+                Страница {{ games.number }} из {{ games.paginator.num_pages }}
+                | Показано {{ games.start_index }}-{{ games.end_index }} из {{ games.paginator.count }} игр
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Функция сброса фильтров
+        function clearFilters() {
+            window.location.href = '/games/';
+        }
+
+        // Автодополнение поиска
+        document.addEventListener('DOMContentLoaded', function() {
+    // ВОССТАНОВЛЕНИЕ СОСТОЯНИЯ ЧЕКБОКСОВ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+    function restoreCheckboxStates() {
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const difficultyValues = urlParams.getAll('difficulty');
+        
+        
+        
+        // Находим все чекбоксы сложности
+        const difficultyCheckboxes = document.querySelectorAll('input[name="difficulty"]');
+        
+        // Сбрасываем все чекбоксы
+        difficultyCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        // Устанавливаем отмеченными только те, что есть в URL
+        difficultyValues.forEach(value => {
+            const checkbox = document.querySelector(`input[name="difficulty"][value="${value}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+                
+            }
+        });
+    }
+    
+    // Вызываем восстановление чекбоксов
+    restoreCheckboxStates();
+            const searchInput = document.getElementById('search-input');
+            const suggestionsContainer = document.getElementById('autocomplete-suggestions');
+            
+            if (searchInput && suggestionsContainer) {
+                searchInput.addEventListener('input', function(e) {
+                    const query = e.target.value.trim();
+                    if (query.length < 2) {
+                        suggestionsContainer.style.display = 'none';
+                        return;
+                    }
+                    
+                    fetch('/games/autocomplete/?term=' + encodeURIComponent(query))
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            if (data.length > 0) {
+                                data.forEach(item => {
+                                    const div = document.createElement('div');
+                                    div.className = 'suggestion-item';
+                                    div.textContent = item.label;
+                                    div.addEventListener('click', function() {
+                                        searchInput.value = item.value;
+                                        suggestionsContainer.style.display = 'none';
+                                        document.getElementById('search-form').submit();
+                                    });
+                                    suggestionsContainer.appendChild(div);
+                                });
+                                suggestionsContainer.style.display = 'block';
+                            } else {
+                                suggestionsContainer.style.display = 'none';
+                            }
+                        })
+                        .catch(error => {
+                           
+                            suggestionsContainer.style.display = 'none';
+                        });
+                });
+                
+                // Скрываем при клике вне
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                        suggestionsContainer.style.display = 'none';
+                    }
+                });
+            }
+            
+            // ВАЛИДАЦИЯ И АВТОКОРРЕКЦИЯ ДЛЯ ФОРМЫ ФИЛЬТРОВ
+            const filterForm = document.getElementById('game-finder-form');
+            if (filterForm) {
+                filterForm.addEventListener('submit', function(e) {
+                    
+                    
+                    // Получаем элементы
+                    const playersMin = document.getElementById('players_min');
+                    const playersMax = document.getElementById('players_max');
+                    const timeMin = document.getElementById('time_min');
+                    const timeMax = document.getElementById('time_max');
+                    
+                    // АВТОКОРРЕКЦИЯ: если min > max, меняем местами
+                    
+                    // Для игроков
+                    if (playersMin && playersMax && playersMin.value && playersMax.value) {
+                        const minVal = parseInt(playersMin.value);
+                        const maxVal = parseInt(playersMax.value);
+                        
+                        if (minVal > maxVal) {
+                                                       playersMin.value = maxVal;
+                            playersMax.value = minVal;
+                        }
+                    }
+                    
+                    // Для времени
+                    if (timeMin && timeMax && timeMin.value && timeMax.value) {
+                        const minVal = parseInt(timeMin.value);
+                        const maxVal = parseInt(timeMax.value);
+                        
+                        if (minVal > maxVal) {
+                                                       timeMin.value = maxVal;
+                            timeMax.value = minVal;
+                        }
+                    }
+                    
+                    // ВАЛИДАЦИЯ: проверяем граничные значения
+                    
+                    // Игроки
+                    if (playersMin && playersMin.value) {
+                        const val = parseInt(playersMin.value);
+                        if (val < 1 || val > 8) {
+                            alert('Минимальное количество игроков должно быть от 1 до 8');
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    
+                    if (playersMax && playersMax.value) {
+                        const val = parseInt(playersMax.value);
+                        if (val < 1 || val > 8) {
+                            alert('Максимальное количество игроков должно быть от 1 до 8');
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    
+                    // Время
+                    if (timeMin && timeMin.value) {
+                        const val = parseInt(timeMin.value);
+                        if (val < 5 || val > 300) {
+                            alert('Минимальное время должно быть от 5 до 300 минут');
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    
+                    if (timeMax && timeMax.value) {
+                        const val = parseInt(timeMax.value);
+                        if (val < 5 || val > 300) {
+                            alert('Максимальное время должно быть от 5 до 300 минут');
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                    
+                   
+                    return true;
+                });
+            }
+            
+            // Добавим визуальную валидацию при вводе
+            function addLiveValidation(inputId, minVal, maxVal) {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('input', function() {
+                        if (this.value) {
+                            const val = parseInt(this.value);
+                            if (val < minVal || val > maxVal) {
+                                this.style.borderColor = '#f44336';
+                                this.style.boxShadow = '0 0 0 2px rgba(244, 67, 54, 0.2)';
+                            } else {
+                                this.style.borderColor = '#4CAF50';
+                                this.style.boxShadow = '0 0 0 2px rgba(76, 175, 80, 0.2)';
+                            }
+                        } else {
+                            this.style.borderColor = '#ddd';
+                            this.style.boxShadow = 'none';
+                        }
+                    });
+                }
+            }
+            
+            // Применяем live валидацию
+            addLiveValidation('players_min', 1, 8);
+            addLiveValidation('players_max', 1, 8);
+            addLiveValidation('time_min', 5, 300);
+            addLiveValidation('time_max', 5, 300);
+                 });
+    </script>
+</body>
+</html>
