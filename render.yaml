@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: board-games-site
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn boardgames_site.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.10"
+    staticPools:
+      - name: static
+        paths:
+          - /static/
+      - name: media
+        paths:
+          - /media/
